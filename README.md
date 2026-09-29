@@ -8,13 +8,17 @@ The collector reads local Codex and Claude Code JSONL histories. It sends derive
 
 API values use a dated price table and are estimates, not invoices. Provider limit percentages are account-wide observations; the displayed device share of stored tokens is not a measured share of the provider limit.
 
-## Another Windows PC
+## Weiteren Windows-PC verbinden
 
-1. Open the dashboard and choose **Weiteres Gerät hinzufügen → Einrichtungscode erstellen**.
-2. On that PC, install Node.js 22.13 or newer if needed.
-3. Open PowerShell and run the displayed command within ten minutes.
+Öffne das Dashboard unter `https://miwale.com/usage/` und wähle **Weiteres Gerät hinzufügen → Einrichtungscode erstellen**. Öffne auf dem neuen Windows-PC PowerShell, führe diese eine Zeile aus und gib anschließend den angezeigten Code ein:
 
-The installer downloads this repository, pairs the PC with a one-time code, imports its existing local history, and registers a per-user Windows Scheduled Task for changes every five minutes. No GitHub repository or manual export is needed. The long-lived device token stays in `%LOCALAPPDATA%\Glut\data\sync-state.json` and is not displayed in the browser. If the PC is offline, the next task run catches up. To remove a PC's automatic access, its server token must currently be revoked in `device-tokens.json` on the server.
+```powershell
+$f=Join-Path $env:TEMP 'glut-install.ps1'; Invoke-WebRequest 'https://raw.githubusercontent.com/milchinien/glut/main/install.ps1' -OutFile $f; powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f
+```
+
+Der Code gilt zehn Minuten. Das Skript installiert bei Bedarf Node.js LTS über `winget`, lädt Glut aus diesem Repository, verbindet den PC, liest die vorhandenen lokalen Verläufe ein und richtet eine Windows-Aufgabe für den Abgleich alle fünf Minuten ein. Für die Node.js-Installation kann Windows eine Administratorbestätigung verlangen. Im Dashboard gibt es auch einen kopierbaren Befehl, der den Code bereits enthält.
+
+Das Gerätetoken bleibt in `%LOCALAPPDATA%\Glut\data\sync-state.json`. Ist der PC offline, holt der nächste Durchlauf die Änderungen nach. Um den automatischen Zugriff eines PCs zu entfernen, muss sein Token derzeit auf dem Server in `device-tokens.json` widerrufen werden.
 
 For local-only use, run `start-dashboard.cmd`; the dashboard binds only to `127.0.0.1:4317`. `export-device.cmd` provides a manual JSON export. Local data stays in `data/`, which is ignored by Git.
 
