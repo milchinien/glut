@@ -13,7 +13,7 @@ API values use a dated price table and are estimates, not invoices. Provider lim
 Öffne das Dashboard unter `https://miwale.com/usage/` und wähle **Weiteres Gerät hinzufügen → Einrichtungscode erstellen**. Öffne auf dem neuen Windows-PC PowerShell, führe diese eine Zeile aus und gib anschließend den angezeigten Code ein:
 
 ```powershell
-$f=Join-Path $env:TEMP 'glut-install.ps1'; Invoke-WebRequest 'https://raw.githubusercontent.com/milchinien/glut/main/install.ps1' -OutFile $f; powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f
+$ErrorActionPreference='Stop'; $f=Join-Path $env:TEMP 'glut-install.ps1'; Invoke-WebRequest 'https://raw.githubusercontent.com/milchinien/glut/main/install.ps1' -OutFile $f; powershell.exe -NoProfile -ExecutionPolicy Bypass -File $f
 ```
 
 Der Code gilt zehn Minuten. Das Skript installiert bei Bedarf Node.js LTS über `winget`, lädt Glut aus diesem Repository, verbindet den PC, liest die vorhandenen lokalen Verläufe ein und richtet eine Windows-Aufgabe für den Abgleich alle fünf Minuten ein. Für die Node.js-Installation kann Windows eine Administratorbestätigung verlangen. Im Dashboard gibt es auch einen kopierbaren Befehl, der den Code bereits enthält.
