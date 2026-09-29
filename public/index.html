@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Glut · AI-Nutzung</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="host.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="#overview"><span class="brand-mark">◈</span><span>glut<small>LOCAL ANALYTICS</small></span></a>
+      <p class="nav-label">DEIN DASHBOARD</p>
+      <nav aria-label="Bereiche">
+        <a href="#overview">Übersicht</a><a href="#projects">Projekte</a><a href="#sessions">Sitzungen</a>
+        <a href="#devices">Geräte & Limits</a><a href="#efficiency">Abo-Vergleich</a><a href="#audit">Datenprüfung</a>
+      </nav>
+      <div class="sidebar-foot"><span class="live-dot"></span> Private Statistik <button id="open-device" type="button">Weiteres Gerät hinzufügen ↗</button><button id="logout" type="button" hidden>Abmelden</button></div>
+    </aside>
+    <main>
+      <header class="top" id="overview">
+        <div><p class="eyebrow">DEINE NUTZUNG, AN EINEM ORT</p><h1>AI-Nutzung<span class="accent">.</span></h1><p class="muted">Codex und Claude Code · lokal erfasste Verläufe</p></div>
+        <div class="top-actions"><span id="updated" class="muted">Wird geladen …</span><button id="refresh" class="button" type="button">↻ Neu einlesen</button><button id="open-settings" class="button primary" type="button">⚙ Einstellungen</button></div>
+      </header>
+      <section class="filterbar" aria-label="Globale Filter">
+        <div class="filter-head"><span>⌁ <strong>Alle Ansichten filtern</strong></span><button id="reset-filters" class="text-button" type="button">Zurücksetzen</button></div>
+        <div class="filters">
+          <label>Gerät<select id="filter-device"></select></label><label>Anbieter<select id="filter-provider"></select></label><label>Modell<select id="filter-model"></select></label>
+          <label>Projekt<select id="filter-project"></select></label><label>Nutzer<select id="filter-user"></select></label>
+          <label>Von<input id="filter-from" type="date"></label><label>Bis<input id="filter-to" type="date"></label>
+        </div>
+      </section>
+      <section class="cards" aria-label="Kennzahlen"><article class="metric"><span>API-Gegenwert</span><strong id="metric-cost">–</strong><small>Geschätzt mit hinterlegten Preisen</small></article><article class="metric"><span>Verarbeitete Token</span><strong id="metric-tokens">–</strong><small>Jede Tokenart genau einmal</small></article><article class="metric"><span>Sitzungen</span><strong id="metric-sessions">–</strong><small>Im Archiv</small></article><article class="metric"><span>Deine Prompts</span><strong id="metric-prompts">–</strong><small>Aus erkennbaren Nutzereingaben</small></article></section>
+      <section class="panel"><div class="section-title"><div><p class="eyebrow">ZEITVERLAUF</p><h2>Tägliche Nutzung</h2></div><label class="inline-select">Anzeigen <select id="chart-metric"><option value="cost">API-Gegenwert</option><option value="tokens">Token</option><option value="prompts">Prompts</option></select></label></div><div id="chart" class="chart"></div></section>
+      <section id="projects" class="panel"><div class="section-title"><div><p class="eyebrow">WOHIN DIE TOKEN GINGEN</p><h2>Projekte</h2></div><span id="projects-count" class="muted"></span></div><p class="hint">Projektordner aus den Sitzungsdaten. Ein Klick auf einen Projektnamen filtert die Seite.</p><div id="project-table" class="table-wrap"></div></section>
+      <section id="sessions" class="panel"><div class="section-title"><div><p class="eyebrow">VOLLSTÄNDIGES ARCHIV</p><h2>Sitzungen</h2></div><input id="session-search" class="search" placeholder="Sitzung oder Projekt suchen" aria-label="Sitzungen durchsuchen"></div><p class="hint">Die Sortierung gilt für alle gespeicherten Sitzungen, bevor Seiten gebildet werden.</p><div id="session-table" class="table-wrap"></div><div id="session-pages" class="pagination"></div></section>
+      <section class="panel"><div class="section-title"><div><p class="eyebrow">TOKENAUFTEILUNG</p><h2>Modelle</h2></div></div><div id="model-table" class="table-wrap"></div></section>
+      <section id="devices" class="panel"><div class="section-title"><div><p class="eyebrow">HERKUNFT & KONTOLIMIT</p><h2>Geräte & Limits</h2></div><button id="open-device-2" class="button" type="button">Gerät hinzufügen</button></div><div id="device-table" class="table-wrap"></div><div class="divider"></div><div class="section-title"><h3>Codex-Limitfenster</h3><label class="inline-select">Zeitraum <select id="limit-window"></select></label></div><div id="limit-detail"></div><p class="hint">Der Limit-Prozentwert stammt vom Anbieter und gilt für das Konto. Tokenanteile zeigen nur die gemessene Nutzung je importiertem Gerät. Ein exakter Limitverbrauch pro Gerät wird nicht bereitgestellt.</p></section>
+      <section id="efficiency" class="panel"><div class="section-title"><div><p class="eyebrow">API-WERT GEGEN ABOKOSTEN</p><h2>Monatliche Effizienz</h2></div><label class="inline-select">Monat <select id="month"></select></label></div><div id="efficiency-content"></div><p class="hint">Für den laufenden Monat wird derselbe bisher vergangene Zeitraum des Vormonats verglichen. Trage deine tatsächlich gezahlten Beträge pro Monat in den Einstellungen ein.</p></section>
+      <section id="audit" class="panel"><div class="section-title"><div><p class="eyebrow">NACHVOLLZIEHBARKEIT</p><h2>Datenprüfung</h2></div></div><div id="audit-content"></div></section>
+      <footer>Glut · Daten bleiben im lokalen Archiv dieses Rechners · <span id="version"></span></footer>
+    </main>
+  </div>
+  <dialog id="settings-dialog"><form id="settings-form"><div class="dialog-head"><h2>Einstellungen</h2><button class="icon-button" type="button" data-close="settings-dialog" aria-label="Schließen">×</button></div><label>Gerätename<input name="deviceName" required maxlength="80"></label><p class="hint">Abo-Beträge in USD. Monatswerte unten überschreiben die allgemeinen Werte.</p><div class="form-row"><label>Codex / Monat<input name="codexDefault" type="number" min="0" step="0.01"></label><label>Claude / Monat<input name="claudeDefault" type="number" min="0" step="0.01"></label></div><label>Monat für tatsächliche Zahlung<input name="paymentMonth" type="month"></label><div class="form-row"><label>Codex tatsächlich<input name="codexPayment" type="number" min="0" step="0.01" placeholder="Unbekannt"></label><label>Claude tatsächlich<input name="claudePayment" type="number" min="0" step="0.01" placeholder="Unbekannt"></label></div><button class="button primary" type="submit">Speichern</button></form></dialog>
+  <dialog id="device-dialog"><div class="dialog-head"><h2>Weiteres Gerät</h2><button class="icon-button" type="button" data-close="device-dialog" aria-label="Schließen">×</button></div><div id="auto-device"><p>Jeder PC sammelt seine Daten lokal und überträgt Änderungen automatisch. Node.js 22.13 oder neuer wird einmalig benötigt.</p><button id="pair-start" class="button primary" type="button">Einrichtungscode erstellen</button><div id="pair-command" class="pair-command" hidden></div></div><div id="manual-device"><p>Für einen manuellen Import den Programmordner ohne <code>data</code> auf dem anderen PC ausführen und <code>export-device.cmd</code> starten.</p><label class="button file-button">Gerätedatei importieren<input id="import-file" type="file" accept=".json,application/json" hidden></label><a id="export-self" class="button" href="/api/export">Archiv exportieren</a></div></dialog>
+  <dialog id="session-dialog"><div class="dialog-head"><h2>Sitzungsdetails</h2><button class="icon-button" type="button" data-close="session-dialog" aria-label="Schließen">×</button></div><div id="session-detail"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

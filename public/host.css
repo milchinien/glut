@@ -1,0 +1,3 @@
+[hidden]{display:none!important}
+.pair-command{margin:16px 0;padding:15px;border:1px solid #735036;border-radius:10px;background:#271c14}
+.pair-command code{display:block;overflow-wrap:anywhere;user-select:all;margin:10px 0;font-size:11px;line-height:1.6}

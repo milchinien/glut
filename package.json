@@ -1,0 +1,18 @@
+{
+  "name": "local-ai-usage-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-only usage dashboard for Codex and Claude Code",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "host": "node src/host.mjs",
+    "sync": "node src/collector.mjs",
+    "import": "node src/archive.mjs",
+    "export": "node src/archive.mjs --export",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}

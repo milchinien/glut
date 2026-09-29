@@ -1,0 +1,21 @@
+name: Glut CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm test
+      - run: docker build -t glut:ci .
+      - run: |
+          docker run -d --name glut-ci -p 4318:4318 -e GLUT_PASSWORD=test-password glut:ci
+          trap 'docker rm -f glut-ci >/dev/null' EXIT
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4318/usage/healthz && break; sleep 1; done
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4318/usage/)" = 200
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4318/usage/api/stats)" = 401
